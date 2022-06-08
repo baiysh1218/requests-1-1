@@ -1,16 +1,3 @@
 {
-  "todos": [
-    {
-      "todo": "f",
-      "id": 1
-    },
-    {
-      "todo": "fv",
-      "id": 2
-    },
-    {
-      "todo": "fvfggrgr",
-      "id": 3
-    }
-  ]
+  "todos": []
 }

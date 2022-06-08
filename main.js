@@ -47,22 +47,36 @@ btnAdd.addEventListener("click", async function () {
 // ! Read
 // получаем элемент, чтою=б убедится, что в переменной ist сейчас НЕ пусто
 let list = document.getElementById("list");
-console.log(list);
+// console.log(list);
 // фукция для получения всех тасков и отоброжения их в div#list
 // async await нужен здесь, чтоб при отправке запроса мы сначала получили данные и только потом записали все в переменную response, иначе (если мы НЕ дождемся)туда запищется pending (состояние примиса, который еще не выполнен)
 async function getTodos() {
   let response = await fetch(API) // если не указать метод запроса, то по умолчанию это GET запрос
     .then(res => res.json()) // переводим все в json формат
     .catch(err => console.log(err)); // отловили ошибку
-  console.log(response);
+  // console.log(response);
   // очишаем div#list, чтоб список тасков корректно отображался и не хранил там предыдущие html-элементы со старыми данными
   list.innerHTML = "";
   // перебираемт полученный из дб.жсон массива создаем div и задаем ему содержимое через метод innerHTML, каждый созданный элемент аппендим в div#list
   response.forEach(item => {
     let newElem = document.createElement("div");
-    newElem.innerHTML = `<span>${item.todo}</span>`;
+    newElem.id = item.id;
+    newElem.innerHTML = `
+    <span>${item.todo}</span>
+    <button class = "btn-delete">Delete</button>`;
     list.append(newElem);
   });
 }
 // вызываем функцию , чтоб как только откроется страница что-то было отобразить
 getTodos();
+
+document.addEventListener("click", async function (e) {
+  if (e.target.className === "btn-delete") {
+    let id = e.target.parentNode.id;
+    await fetch(`${API}/${id}`, {
+      method: "DELETE",
+    });
+    getTodos();
+  }
+  // console.log(e.target.parentNode.id);
+});
